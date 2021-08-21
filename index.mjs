@@ -15,19 +15,27 @@ const regression = new LinearRegession(features, labels, {
   iterations: 30,
   batchSize: null,
 })
+
 regression.train()
+
 const r2 = regression.test(testFeatures, testLabels)
 
 regression.print()
 console.info('r2:', r2)
 
-plot({
-  x: regression.mseHistory.reverse(),
-  xLabel: 'Iterations #',
-  yLabel: 'Mean Squared Error',
-  title: 'MSE development (no batching)',
-  name: 'MSE-iterations.plot',
-})
+const predictions = regression.predict([
+  [90, 112, 1.4],
+  [120, 380, 2],
+])
+predictions.print()
+
+// plot({
+//   x: regression.mseHistory.reverse(),
+//   xLabel: 'Iterations #',
+//   yLabel: 'Mean Squared Error',
+//   title: 'MSE development (no batching)',
+//   name: 'MSE-iterations.plot',
+// })
 
 // plot({
 //   x: regression.bHistory,

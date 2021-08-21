@@ -129,6 +129,12 @@ class LinearRegession {
     return 1 - SSfit / SSmean
   }
 
+  predict(observations) {
+    const features = tf.tensor(observations)
+
+    return this._processFeatures(features).matMul(this.weights)
+  }
+
   print() {
     console.info('iterations amount:', this.options.iterations)
     console.info('learning rate:', this.options.learningRate)
