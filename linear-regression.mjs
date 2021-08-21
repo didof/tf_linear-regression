@@ -90,33 +90,31 @@ class LinearRegession {
         this._adaptLearningRate(MSE)
         this.bHistory.push(this.weights.get(0, 0))
       }
+    } else {
+      const batchsAmount = Math.floor(this.features.shape[0] / batchSize)
+      const batchSlice = makeBatchSlicer(batchSize)
 
-      return
-    }
+      for (let i = 0; i < iterations; i++) {
+        for (let j = 0; j < batchsAmount; j++) {
+          const featuresBatch = batchSlice(this.features, j)
+          const labelsBatch = batchSlice(this.labels, j)
 
-    const batchsAmount = Math.floor(this.features.shape[0] / batchSize)
-    const batchSlice = makeBatchSlicer(batchSize)
+          this._gradientDescent(featuresBatch, labelsBatch)
+        }
 
-    for (let i = 0; i < iterations; i++) {
-      for (let j = 0; j < batchsAmount; j++) {
-        const featuresBatch = batchSlice(this.features, j)
-        const labelsBatch = batchSlice(this.labels, j)
-
-        this._gradientDescent(featuresBatch, labelsBatch)
+        const MSE = this._calculateMSE()
+        this._adaptLearningRate(MSE)
+        this._recordB()
       }
 
-      const MSE = this._calculateMSE()
-      this._adaptLearningRate(MSE)
-      this._recordB()
+      function makeBatchSlicer(batchSize) {
+        return (tensor, j) => {
+          return tensor.slice([batchSize * j, 0], [batchSize, -1])
+        }
+      }
     }
 
     return this
-
-    function makeBatchSlicer(batchSize) {
-      return (tensor, j) => {
-        return tensor.slice([batchSize * j, 0], [batchSize, -1])
-      }
-    }
   }
 
   test(features, labels) {
