@@ -6,60 +6,6 @@ const defaultOptions = {
   batchSize: null,
 }
 
-export class BaseLinearRegression {
-  constructor(features, labels, options) {
-    this.features = features
-    this.labels = labels
-
-    this.options = Object.freeze(Object.assign(defaultOptions, options))
-
-    this.b = 0
-    this.m = 0
-  }
-
-  train() {
-    const { iterations } = this.options
-
-    for (let i = 0; i < iterations; i++) {
-      this._gradientDescent()
-    }
-
-    return this
-  }
-
-  print() {
-    console.log('m', this.m)
-    console.log('b', this.b)
-  }
-
-  _gradientDescent() {
-    const remainers = this.features.map(row => {
-      return this.m * row[0] + this.b
-    })
-
-    const derivativeRespectToB =
-      remainers
-        .map((remainer, index) => {
-          return remainer - this.labels[index][0]
-        })
-        .reduce((acc, cur) => acc + cur, 0) / this.labels.length
-
-    const derivativeRespectToM =
-      remainers
-        .map((remainer, index) => {
-          return (
-            (this.labels[index][0] - remainer) * this.features[index][0] * -1
-          )
-        })
-        .reduce((acc, cur) => acc + cur, 0) / this.labels.length
-
-    const { learningRate } = this.options
-
-    this.b = this.b - learningRate * derivativeRespectToB
-    this.m = this.m - learningRate * derivativeRespectToM
-  }
-}
-
 class LinearRegession {
   constructor(features, labels, options) {
     this.options = Object.assign(defaultOptions, options)
