@@ -1,5 +1,5 @@
 import '@tensorflow/tfjs-node'
-import loadCSV from './load-csv.mjs'
+import loadCSV from '../utils/load-csv.mjs'
 import LinearRegession from './linear-regression.mjs'
 import plot from 'node-remote-plot'
 

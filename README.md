@@ -1,6 +1,6 @@
-# Linear Regression
+## Linear Regression
 
-## How it works
+### How it works
 
 When you instantiate the `LinearRegression` class it is obviously necessary to provide it with the set of features (1) and the set of labels (2). Optionally it is possible to pass a configuration object as follows:
 
@@ -20,7 +20,7 @@ The following methods can be called on the instance:
 
 - **predict**: receives a dataset of features and returns the corresponding predictions based on the line found during training.
 
-## How to use
+### How to use
 
 First install dependencies with `npm install`
 
@@ -45,6 +45,6 @@ let { features, labels, testFeatures, testLabels } = loadCSV('./cars.csv', {
 })
 ```
 
-Finally, run `node index.js`.
+Finally, run `node linear-regression/index.mjs`.
 
 In console you can find info about the weights and R^2. Uncomment the plot section to obtain plots in the fs.
