@@ -45,6 +45,6 @@ let { features, labels, testFeatures, testLabels } = loadCSV('./cars.csv', {
 })
 ```
 
-Finally, run `node linear-regression/index.mjs`.
+Finally, run `npm run regression:linear`.
 
 In console you can find info about the weights and R^2. Uncomment the plot section to obtain plots in the fs.
