@@ -15,6 +15,6 @@
   },
   "scripts": {
     "regression:linear": "node linear-regression/index.mjs",
-    "regression:logistic": "node linear-regression/index.mjs"
+    "regression:logistic": "node logistic-regression/index.mjs"
   }
 }
