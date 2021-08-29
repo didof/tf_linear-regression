@@ -3,7 +3,7 @@ import tf from '@tensorflow/tfjs'
 const defaultOptions = {
   learningRate: 0.1,
   iterations: 100,
-  batchSize: null,
+  batchSize: 100,
   decisionBoundary: 0.5,
 }
 
@@ -23,38 +23,35 @@ class MultinominalLogisticRegression {
     this.weights = tf.zeros([this.features.shape[1], this.labels.shape[1]])
 
     this.costHistory = []
+    this.bHistory = []
   }
 
   train() {
     const { iterations, batchSize } = this.options
+    const batchsAmount = Math.floor(this.features.shape[0] / batchSize)
+    const batchSlice = makeBatchSlicer(batchSize)
 
-    if (!batchSize) {
-      for (let i = 0; i < iterations; i++) {
-        this._gradientDescent(this.features, this.labels)
+    console.info('Start Training')
 
-        const cost = this._calculateCrossEntropy()
-        this._adaptLearningRate(cost)
-      }
-    } else {
-      const batchsAmount = Math.floor(this.features.shape[0] / batchSize)
-      const batchSlice = makeBatchSlicer(batchSize)
+    for (let i = 0; i < iterations; i++) {
+      for (let j = 0; j < batchsAmount; j++) {
+        const featuresBatch = batchSlice(this.features, j)
+        const labelsBatch = batchSlice(this.labels, j)
 
-      for (let i = 0; i < iterations; i++) {
-        for (let j = 0; j < batchsAmount; j++) {
-          const featuresBatch = batchSlice(this.features, j)
-          const labelsBatch = batchSlice(this.labels, j)
-
-          this._gradientDescent(featuresBatch, labelsBatch)
-        }
-
-        const cost = this._calculateCrossEntropy()
-        this._adaptLearningRate(cost)
+        this._gradientDescent(featuresBatch, labelsBatch)
       }
 
-      function makeBatchSlicer(batchSize) {
-        return (tensor, j) => {
-          return tensor.slice([batchSize * j, 0], [batchSize, -1])
-        }
+      const cost = this._calculateCrossEntropy()
+      this._adaptLearningRate(cost)
+
+      console.info(`Iteration #` + i)
+    }
+
+    console.info('End Trainig')
+
+    function makeBatchSlicer(batchSize) {
+      return (tensor, j) => {
+        return tensor.slice([batchSize * j, 0], [batchSize, -1])
       }
     }
 
@@ -62,11 +59,6 @@ class MultinominalLogisticRegression {
   }
 
   test(features, labels) {
-    // const predictions = this.predict(features)
-    // const incorrect = predictions.sub(tf.tensor(labels)).abs().sum().get()
-    // const total = predictions.shape[0]
-    // return (total - incorrect) / total
-
     const predictions = this.predict(features)
     const testLabels = tf.tensor(labels).argMax(1)
 
@@ -77,13 +69,6 @@ class MultinominalLogisticRegression {
   }
 
   predict(observations) {
-    // const features = tf.tensor(observations)
-    // return this._processFeatures(features)
-    //   .matMul(this.weights)
-    //   .softmax()
-    //   .greater(this.options.decisionBoundary)
-    //   .cast('float32')
-
     const features = tf.tensor(observations)
     const predictions = this._processFeatures(features)
       .matMul(this.weights)
@@ -151,7 +136,13 @@ class MultinominalLogisticRegression {
   }
 
   _standardize(features) {
-    return features.sub(this.mean).div(this.variance.pow(0.5))
+    const flippedSignal = this.variance
+      .cast('bool')
+      .logicalNot()
+      .cast('float32')
+    return features
+      .sub(this.mean)
+      .div(flippedSignal.add(this.variance).pow(0.5))
   }
 }
 
