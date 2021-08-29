@@ -2,7 +2,9 @@ const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 const guess = document.getElementById('guess')
 
-ctx.lineWidth = 15
+ctx.lineWidth = 13
+
+window.addEventListener('scroll', event => event.preventDefault())
 
 const offset = createOffsetObject()
 const ctxOptions = createContextOptions(ctx)
@@ -14,11 +16,17 @@ enableButtons(canvasActions)
 function createDrawer({ canvas, ctx, offset }) {
   let isDrawing = false
 
+  const onTouchMove = createTouchAdapters(canvas)
+
   const dict = {
     mousemove: onMousemove,
     mouseleave: onMouseleave,
     mousedown: onMousedown,
     mouseup: onMouseup,
+    touchstart: onMousedown,
+    touchcancel: onMouseleave,
+    touchend: onMouseleave,
+    touchmove: onTouchMove,
   }
 
   addEventListeners(canvas, dict)
@@ -59,6 +67,19 @@ function createDrawer({ canvas, ctx, offset }) {
     ctx.fillStyle = 'white'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     guess.innerHTML = ''
+  }
+
+  function createTouchAdapters(element) {
+    const { left, top } = element.getBoundingClientRect()
+
+    return onTouchMove
+
+    function onTouchMove(event) {
+      const { pageX, pageY } = event.targetTouches[0]
+      const offsetX = Math.floor(pageX - left)
+      const offsetY = Math.floor(pageY - top)
+      onMousemove({ offsetX, offsetY })
+    }
   }
 }
 
