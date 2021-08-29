@@ -14,7 +14,8 @@
     "shuffle-seed": "^1.1.6"
   },
   "scripts": {
-    "regression:linear": "node linear-regression/index.mjs",
-    "regression:logistic": "node logistic-regression/index.mjs"
+    "lin": "node linear-regression/index.mjs",
+    "log": "node logistic-regression/index.mjs",
+    "mul": "node multinominal-logistic-regression/index.mjs"
   }
 }
