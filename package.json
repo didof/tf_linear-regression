@@ -17,6 +17,7 @@
     "lin": "node linear-regression/index.mjs",
     "log": "node logistic-regression/index.mjs",
     "mul": "node multinominal-logistic-regression/index.mjs",
-    "mnist": "node mnist/index.mjs"
+    "mnist": "node mnist/index.mjs",
+    "demo": "cd mnist && http-server public"
   }
 }

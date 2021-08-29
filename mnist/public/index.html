@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recognize digit ML</title>
+  </head>
+  <body>
+    <div>
+      <div class="offsets">
+        <span id="offset_x"></span>
+        <span id="offset_y"></span>
+      </div>
+      <canvas width="28" height="28"></canvas>
+      <div>
+        <h1 id="guess"></h1>
+      </div>
+      <div>
+        <span>line width: </span>
+        <span id="lineWidth"></span>
+        <!-- <input type="range" id="" /> -->
+      </div>
+      <div>
+        <span>line cap: </span>
+        <span id="lineCap"></span>
+        <!-- <input type="select" id="" /> -->
+      </div>
+      <div>
+        <button id="clear_btn">clear</button>
+        <button id="print_btn">print</button>
+        <button id="demo_btn">which digit is it?</button>
+      </div>
+    </div>
+  </body>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+    .offsets {
+      height: 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.2"></script>
+  <script src="/app.js"></script>
+  <script src="/utils.js"></script>
+  <script src="/canvas.js"></script>
+</html>

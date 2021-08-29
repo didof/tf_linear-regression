@@ -1,4 +1,6 @@
 import tf from '@tensorflow/tfjs'
+import fs from 'fs'
+import path from 'path'
 
 const defaultOptions = {
   learningRate: 0.1,
@@ -56,6 +58,47 @@ class MultinominalLogisticRegression {
     }
 
     return this
+  }
+
+  saveWeights() {
+    const filename = path.join(process.cwd(), 'mnist', 'public', 'weights.txt')
+    const values = this.weights.dataSync()
+
+    const stringWeights = this.weights
+      .unstack()
+      .map(row => row.dataSync().join(','))
+      .join(':')
+
+    fs.writeFile(filename, stringWeights, function (err) {
+      if (err) return console.log(err)
+      console.log(`Weights saved in ${filename}`)
+    })
+  }
+
+  saveMean() {
+    const filename = path.join(process.cwd(), 'mnist', 'public', 'means.txt')
+
+    const arr = Array.from(this.mean.dataSync()).join(',')
+
+    fs.writeFile(filename, arr, function (err) {
+      if (err) return console.log(err)
+      console.log(`Mean saved in ${filename}`)
+    })
+  }
+
+  saveVariance() {
+    const filename = path.join(
+      process.cwd(),
+      'mnist',
+      'public',
+      'variances.txt'
+    )
+    const arr = Array.from(this.variance.dataSync()).join(',')
+
+    fs.writeFile(filename, arr, function (err) {
+      if (err) return console.log(err)
+      console.log(`Variance saved in ${filename}`)
+    })
   }
 
   test(features, labels) {

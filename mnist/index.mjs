@@ -3,27 +3,28 @@ import mnist from 'mnist-data'
 import MultinominalLogisticRegression from './multinominal-logistic-regression.mjs'
 import _ from 'lodash'
 
-const mnistData = mnist.training(0, 10000)
+const mnistData = mnist.training(0, 60000)
 const [features, labels] = processData(mnistData)
 
 const regression = new MultinominalLogisticRegression(features, labels, {
   learningRate: 1,
-  iterations: 30,
+  iterations: 20,
   batchSize: 100,
 })
 
 regression.train()
+regression.saveWeights()
+regression.saveMean()
+regression.saveVariance()
 
-const testMnistData = mnist.testing(0, 100)
+const testMnistData = mnist.testing(0, 1000)
 const [testFeatures, testLabels] = processData(testMnistData)
 
 const accuracy = regression.test(testFeatures, testLabels)
 console.log(`Accuracy:`, accuracy)
 
-const test = mnist.testing(100, 101)
-
-const predictions = regression.predict(flatFeatures(test.images.values))
-predictions.print()
+// const predictions = regression.predict(flatFeatures(test.images.values))
+// predictions.print()
 
 function processData(mnistData) {
   const flattedFeatures = flatFeatures(mnistData.images.values)
