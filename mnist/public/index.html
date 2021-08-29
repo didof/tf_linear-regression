@@ -6,41 +6,61 @@
     <title>Recognize digit ML</title>
   </head>
   <body>
-    <div>
-      <div class="offsets">
-        <span id="offset_x"></span>
-        <span id="offset_y"></span>
-      </div>
+    <h1>Multinominal Logistic Regression</h1>
+    <div class="reccomendations">
+      <span>Recommendations</span>
+      <ul>
+        <li>draw only one digit from 0 to 9</li>
+        <li>draw in the center of the canvas</li>
+      </ul>
+    </div>
+    <div class="offsets">
+      <span id="offset_x"></span>
+      <span id="offset_y"></span>
+    </div>
+    <div class="core">
       <canvas width="28" height="28"></canvas>
-      <div>
-        <h1 id="guess"></h1>
-      </div>
-      <div>
-        <span>line width: </span>
-        <span id="lineWidth"></span>
-        <!-- <input type="range" id="" /> -->
-      </div>
-      <div>
-        <span>line cap: </span>
-        <span id="lineCap"></span>
-        <!-- <input type="select" id="" /> -->
-      </div>
-      <div>
-        <button id="clear_btn">clear</button>
-        <button id="print_btn">print</button>
-        <button id="demo_btn">which digit is it?</button>
-      </div>
+      <h1 id="guess"></h1>
+    </div>
+    <div>
+      <span>line width: </span>
+      <span id="lineWidth"></span>
+      <!-- <input type="range" id="" /> -->
+    </div>
+    <div>
+      <span>line cap: </span>
+      <span id="lineCap"></span>
+      <!-- <input type="select" id="" /> -->
+    </div>
+    <div>
+      <button id="clear_btn">clear</button>
+      <button id="print_btn">print</button>
+      <button id="demo_btn">which digit is it?</button>
     </div>
   </body>
   <style>
     body {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     canvas {
       border: 1px solid black;
+    }
+    .reccomendations {
+      align-self: start;
+    }
+    .core {
+      height: 20vh;
+      width: 50vw;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+    #guess {
+      max-width: 50px;
     }
     .offsets {
       height: 20px;
