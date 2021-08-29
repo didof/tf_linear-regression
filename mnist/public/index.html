@@ -19,7 +19,7 @@
       <span id="offset_y"></span>
     </div>
     <div class="core">
-      <canvas width="28" height="28"></canvas>
+      <canvas width="280" height="280"></canvas>
       <h1 id="guess"></h1>
     </div>
     <div>
@@ -42,7 +42,7 @@
     body {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
       height: 100vh;
     }
@@ -53,14 +53,14 @@
       align-self: start;
     }
     .core {
-      height: 20vh;
-      width: 50vw;
+      min-width: 70vw;
       display: flex;
       justify-content: space-evenly;
       align-items: center;
     }
     #guess {
       max-width: 50px;
+      font-size: 72px;
     }
     .offsets {
       min-width: 20vw;

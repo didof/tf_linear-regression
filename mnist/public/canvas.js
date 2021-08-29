@@ -2,6 +2,8 @@ const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 const guess = document.getElementById('guess')
 
+ctx.lineWidth = 15
+
 const offset = createOffsetObject()
 const ctxOptions = createContextOptions(ctx)
 
@@ -24,7 +26,6 @@ function createDrawer({ canvas, ctx, offset }) {
 
   return {
     clear: createBackground,
-    getData,
   }
 
   function onMousemove({ offsetX, offsetY }) {
@@ -58,23 +59,6 @@ function createDrawer({ canvas, ctx, offset }) {
     ctx.fillStyle = 'white'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     guess.innerHTML = ''
-  }
-
-  function getData() {
-    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
-    return isolateAndInvertAlpha(data)
-
-    function isolateAndInvertAlpha(array) {
-      let isolated = []
-
-      for (let i = 0; i < array.length; i++) {
-        if (i % 4) continue
-        isolated.push(array[i] ^ 0xff)
-      }
-
-      return isolated
-    }
   }
 }
 
@@ -111,7 +95,7 @@ function createOffsetObject() {
 function createContextOptions(ctx) {
   const ctxOptionsObject = decorate({
     lineWidth: {
-      value: 10,
+      value: 300,
     },
     lineCap: {
       value: 'round',
@@ -182,9 +166,42 @@ function enableButtons(actions) {
     demoBtn.addEventListener('click', execDemo)
 
     function execDemo() {
-      const data = actions.getData()
+      const [canvas, ctx] = generatePhantom()
+      const data = getData(canvas, ctx)
+
       const prediction = demo([data])
       guess.innerHTML = prediction
+    }
+  }
+
+  function generatePhantom() {
+    const P = 28
+    const phantomCanvas = document.createElement('canvas')
+    phantomCanvas.width = P
+    phantomCanvas.height = P
+    const phantomCtx = phantomCanvas.getContext('2d')
+    phantomCtx.fillStyle = 'red'
+    phantomCtx.fillRect(0, 0, P, P)
+
+    phantomCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, P, P)
+
+    return [phantomCanvas, phantomCtx]
+  }
+
+  function getData(canvas, ctx) {
+    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
+
+    return isolateAndInvertAlpha(data)
+
+    function isolateAndInvertAlpha(array) {
+      let isolated = []
+
+      for (let i = 0; i < array.length; i++) {
+        if (i % 4) continue
+        isolated.push(array[i] ^ 0xff)
+      }
+
+      return isolated
     }
   }
 }
