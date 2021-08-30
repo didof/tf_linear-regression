@@ -2,8 +2,6 @@ const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 const guess = document.getElementById('guess')
 
-ctx.lineWidth = 13
-
 window.addEventListener('scroll', event => event.preventDefault())
 
 const offset = createOffsetObject()
@@ -116,7 +114,7 @@ function createOffsetObject() {
 function createContextOptions(ctx) {
   const ctxOptionsObject = decorate({
     lineWidth: {
-      value: 300,
+      value: 8,
     },
     lineCap: {
       value: 'round',
@@ -129,6 +127,7 @@ function createContextOptions(ctx) {
 
   function bootstrap() {
     Object.keys(ctxOptionsObject).forEach(key => {
+      ctxOptionsObject[key].update()
       ctxOptionsObject[key].render()
     })
   }
@@ -141,7 +140,7 @@ function createContextOptions(ctx) {
     }, dict)
 
     function createUpdater(key) {
-      return function update(value) {
+      return function update(value = ctxOptionsObject[key].value) {
         ctxOptionsObject[key].value = value
         ctx[key] = value
       }

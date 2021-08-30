@@ -8,7 +8,7 @@ const [features, labels] = processData(mnistData)
 
 const regression = new MultinominalLogisticRegression(features, labels, {
   learningRate: 1,
-  iterations: 20,
+  iterations: 40,
   batchSize: 100,
 })
 
@@ -17,7 +17,7 @@ regression.saveWeights()
 regression.saveMean()
 regression.saveVariance()
 
-const testMnistData = mnist.testing(0, 1000)
+const testMnistData = mnist.testing(0, 5000)
 const [testFeatures, testLabels] = processData(testMnistData)
 
 const accuracy = regression.test(testFeatures, testLabels)
