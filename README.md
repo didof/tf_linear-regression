@@ -1,5 +1,9 @@
 ## Linear Regression
 
+## Demo
+
+Try it [here](https://multinominal-logistic-regression.netlify.app/)!
+
 ### How it works
 
 When you instantiate the `LinearRegression` class it is obviously necessary to provide it with the set of features (1) and the set of labels (2). Optionally it is possible to pass a configuration object as follows:
